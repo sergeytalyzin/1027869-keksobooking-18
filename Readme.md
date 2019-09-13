@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [сергей талызин](https://up.htmlacademy.ru/javascript/18/user/1027869).
-* Наставник: `Неизвестно`.
+* Наставник: [виталий яковенко](https://htmlacademy.ru/profile/id376639).
 
 ---
 
