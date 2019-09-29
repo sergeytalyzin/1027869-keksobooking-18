@@ -1,8 +1,13 @@
 'use strict';
 var advertPin = document.querySelector('.map__pins');
-
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
+
+var teamplatePin = document.querySelector('#pin')
+  .content
+  .querySelector('.map__pin');
+
+var fragmentPin = document.createDocumentFragment();
 
 var titles = ['Лучший вид', 'Ретро квартира', 'Лучше не селиться', 'С запахом рыбы', 'Новый евроремонт', 'Отель с видом на Башню', 'Комната у парка', 'Эксклюзивный Пент-Хаус'];
 var cardDiscription = [
@@ -106,11 +111,7 @@ var generateArray = function () {
 };
 
 var appartments = generateArray();
-var teamplatePin = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
 
-var fragmentPin = document.createDocumentFragment();
 for (var i = 0; i < 8; i++) {
   var newPin = teamplatePin.cloneNode(true);
   newPin.setAttribute('style', 'left: ' + appartments[i].location.x + '%; ' + 'top:' + appartments[i].location.y + 'px;');
