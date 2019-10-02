@@ -1,16 +1,6 @@
 'use strict';
-var advertPin = document.querySelector('.map__pins');
-var map = document.querySelector('.map');
-map.classList.remove('map--faded');
-
-var teamplatePin = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-
-var fragmentPin = document.createDocumentFragment();
-
-var titles = ['Лучший вид', 'Ретро квартира', 'Лучше не селиться', 'С запахом рыбы', 'Новый евроремонт', 'Отель с видом на Башню', 'Комната у парка', 'Эксклюзивный Пент-Хаус'];
-var cardDiscription = [
+var TITLES = ['Лучший вид', 'Ретро квартира', 'Лучше не селиться', 'С запахом рыбы', 'Новый евроремонт', 'Отель с видом на Башню', 'Комната у парка', 'Эксклюзивный Пент-Хаус'];
+var CARD_DISCRIPTION = [
   'Прекрасное жильё , хозяин достаточно отзывчивый человек! Рекомендую данное жильё!',
   'Шикарная 5комнатная квартира в центре Москвы: изолированные комнаты и большая лаундж зона. Отличное расположение позволяет быстро дойти до метро Маяковская, Белорусская и Краснопресненская.',
   'Уютная, современная, двухэтажная студия, расположена в историческом центре Москвы, в 10 мин. ходьбы от Площади Трёх Вокзалов (Казанский, Ярославский, Ленинградский) и в 5 минутах от станции метро Бауманская',
@@ -20,49 +10,66 @@ var cardDiscription = [
   'Уютная, современная, двухэтажная студия, расположена в историческом центре Москвы.',
   'Апартамент расположен недалеко от центра Москвы. До м. Автозаводская 300 метров. Бесплатная свободная парковка во дворе.Вокруг множество мест отдыха - десятки ресторанов, кафе, деловых и торговых центров и парков.'
 ];
+var FLAT_TYPE = ['palace', 'flat', 'house', 'bungalo'];
+var CLOUD_X = 0;
+var CLOUD_Y = 0;
+var CHEKINOUT_TIMES = ['12:00', '13:00', '14:00'];
+var FEAUTERS_TEMPLATE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var generateFlat = function () {
-  var flatType = ['palace', 'flat', 'house', 'bungalo'];
-  return flatType[Math.round((Math.random() * 4))];
+var advertPin = document.querySelector('.map__pins');
+var map = document.querySelector('.map');
+var teamplatePin = document.querySelector('#pin')
+  .content
+  .querySelector('.map__pin');
+
+
+var generateFlat = function (flattype) {
+  return flattype[Math.round((Math.random() * 4))];
 };
 
-var generateCordinate = function () {
-  var cloudx = Math.round(Math.random() * 1000);
-  var cloudy = Math.round(Math.random() * 1000);
+var getRandom = function(number, add) {
+  if (number && add) {
+    return Math.round(Math.random() * number) + add;
+  } else {
+  return Math.round(Math.random() * number);
+  }
+};
+
+var generateCordinate = function (cloudx, cloudy) {
+  cloudx = getRandom(1000);
+  cloudy = getRandom(1000);
 
   return cloudx + ',' + cloudy;
 };
 var generatePrice = function () {
-  return Math.round(Math.random() * 10000);
+  return getRandom(10000);
 };
 
 var generateRooms = function () {
-  return Math.round(Math.random() * 4 + 1);
+  return getRandom(4) + 1;
 };
 
 var generateGuest = function () {
-  return Math.round(Math.random() * 7);
+  return getRandom(7);
 };
 
-var generateCheckinOutTime = function () {
-  var checkintimes = ['12:00', '13:00', '14:00'];
-  return checkintimes[Math.round(Math.random() * 2)];
+var generateCheckinOutTime = function (times) {
+  return times[getRandom(2)];
 };
 
-var generateFeatures = function () {
-  var feautersTemplate = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-  var length = Math.round(Math.random() * 5);
+var generateFeatures = function (feautersTemplate) {
+  var length = getRandom(feautersTemplate.length - 1);
   var generatedFeatures = [];
 
   for (var i = 0; i < length; i++) {
-    var number = Math.round(Math.random() * 5);
+    var number = getRandom(feautersTemplate.length - 1);
     generatedFeatures[i] = feautersTemplate[number];
   }
   return generatedFeatures;
 };
 
 var generatePhotos = function () {
-  var arrayLength = Math.round(Math.random() * 20);
+  var arrayLength = getRandom(15);
   var generatedPhotos = [];
   for (var i = 0; i < arrayLength; i++) {
     generatedPhotos[i] = 'http://o0.github.io/assets/images/tokyo/hotel' + i + '.jpg';
@@ -71,11 +78,11 @@ var generatePhotos = function () {
 };
 
 var generateMapCordinateY = function () {
-  return Math.round(Math.random() * 500 + 130);
+  return getRandom(500, 130);
 };
 
 var generateMapCordinateX = function () {
-  return Math.round(Math.random() * 99 + 1);
+  return getRandom(99,1);
 };
 
 var generateArray = function () {
@@ -87,16 +94,16 @@ var generateArray = function () {
       },
 
       'offer': {
-        'title': titles[i],
-        'address': generateCordinate(),
+        'title': TITLES[i],
+        'address': generateCordinate(CLOUD_X, CLOUD_Y),
         'price': generatePrice(),
-        'type': generateFlat(),
+        'type': generateFlat(FLAT_TYPE),
         'rooms': generateRooms(),
         'guests': generateGuest(),
-        'checkin': generateCheckinOutTime(),
-        'checkout': generateCheckinOutTime(),
-        'features': generateFeatures(),
-        'description': cardDiscription[i],
+        'checkin': generateCheckinOutTime(CHEKINOUT_TIMES),
+        'checkout': generateCheckinOutTime(CHEKINOUT_TIMES),
+        'features': generateFeatures(FEAUTERS_TEMPLATE),
+        'description': CARD_DISCRIPTION[i],
         'photos': generatePhotos()
       },
 
@@ -111,15 +118,21 @@ var generateArray = function () {
 };
 
 var appartments = generateArray();
+var getContent = function (array) {
+  var fragmentPin = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    var newPin = teamplatePin.cloneNode(true);
+    newPin.setAttribute('style', 'left: ' + array[i].location.x + '%; ' + 'top:' + array[i].location.y + 'px;');
+    newPin.src = array[i].author.avatar;
+    var imagePin = newPin.querySelector('img');
+    imagePin.setAttribute('src', array[i].author.avatar);
+    imagePin.setAttribute('alt', array[i].offer.title);
 
-for (var i = 0; i < 8; i++) {
-  var newPin = teamplatePin.cloneNode(true);
-  newPin.setAttribute('style', 'left: ' + appartments[i].location.x + '%; ' + 'top:' + appartments[i].location.y + 'px;');
-  newPin.src = appartments[i].author.avatar;
-  var imagePin = newPin.querySelector('img');
-  imagePin.setAttribute('src', appartments[i].author.avatar);
-  imagePin.setAttribute('alt', appartments[i].offer.title);
+    fragmentPin.appendChild(newPin);
+  }
+  return fragmentPin;
+};
+var content = getContent(appartments);
 
-  fragmentPin.appendChild(newPin);
-}
-advertPin.appendChild(fragmentPin);
+map.classList.remove('map--faded');
+advertPin.appendChild(content);
