@@ -16,8 +16,8 @@ var CLOUD_Y = 0;
 var CHEKINOUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEAUTERS_TEMPLATE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var generateFlat = function (flattype) {
-  return flattype[Math.round((Math.random() * 4))];
+var generateFlat = function () {
+  return FLAT_TYPE[Math.round((Math.random() * 4))];
 };
 
 var getRandom = function (number, add) {
@@ -43,8 +43,8 @@ var generateGuest = function () {
   return getRandom(7);
 };
 
-var generateCheckinOutTime = function (times) {
-  return times[getRandom(2)];
+var generateCheckinOutTime = function () {
+  return CHEKINOUT_TIMES [getRandom(2)];
 };
 
 var generateFeatures = function (feautersTemplate) {
@@ -87,11 +87,11 @@ var generateArray = function () {
         'title': TITLES[i],
         'address': generateCordinate(CLOUD_X, CLOUD_Y),
         'price': generatePrice(),
-        'type': generateFlat(FLAT_TYPE),
+        'type': generateFlat(),
         'rooms': generateRooms(),
         'guests': generateGuest(),
-        'checkin': generateCheckinOutTime(CHEKINOUT_TIMES),
-        'checkout': generateCheckinOutTime(CHEKINOUT_TIMES),
+        'checkin': generateCheckinOutTime(),
+        'checkout': generateCheckinOutTime(),
         'features': generateFeatures(FEAUTERS_TEMPLATE),
         'description': CARD_DISCRIPTION[i],
         'photos': generatePhotos()
