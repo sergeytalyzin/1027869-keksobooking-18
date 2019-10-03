@@ -16,23 +16,13 @@ var CLOUD_Y = 0;
 var CHEKINOUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEAUTERS_TEMPLATE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var advertPin = document.querySelector('.map__pins');
-var map = document.querySelector('.map');
-var teamplatePin = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-
-
 var generateFlat = function (flattype) {
   return flattype[Math.round((Math.random() * 4))];
 };
 
-var getRandom = function(number, add) {
-  if (number && add) {
-    return Math.round(Math.random() * number) + add;
-  } else {
-  return Math.round(Math.random() * number);
-  }
+var getRandom = function (number, add) {
+  add = add || 0;
+  return Math.round(Math.random() * number) + add;
 };
 
 var generateCordinate = function (cloudx, cloudy) {
@@ -82,7 +72,7 @@ var generateMapCordinateY = function () {
 };
 
 var generateMapCordinateX = function () {
-  return getRandom(99,1);
+  return getRandom(99, 1);
 };
 
 var generateArray = function () {
@@ -117,11 +107,11 @@ var generateArray = function () {
   return array;
 };
 
-var appartments = generateArray();
-var getContent = function (array) {
+
+var getContent = function (array, teamplate) {
   var fragmentPin = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
-    var newPin = teamplatePin.cloneNode(true);
+    var newPin = teamplate.cloneNode(true);
     newPin.setAttribute('style', 'left: ' + array[i].location.x + '%; ' + 'top:' + array[i].location.y + 'px;');
     newPin.src = array[i].author.avatar;
     var imagePin = newPin.querySelector('img');
@@ -132,7 +122,14 @@ var getContent = function (array) {
   }
   return fragmentPin;
 };
-var content = getContent(appartments);
+
+var advertPin = document.querySelector('.map__pins');
+var map = document.querySelector('.map');
+var teamplatePin = document.querySelector('#pin')
+  .content
+  .querySelector('.map__pin');
 
 map.classList.remove('map--faded');
+var appartments = generateArray();
+var content = getContent(appartments, teamplatePin);
 advertPin.appendChild(content);
