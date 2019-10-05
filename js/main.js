@@ -121,15 +121,15 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
-var getFlatCard = function (object, type) {
+var getFlatCard = function (object, element) {
   if (object.offer.type === 'palace') {
-    type.textContent = 'Дворец';
+    element.textContent = 'Дворец';
   } else if (object.offer.type === 'flat') {
-    type.textContent = 'Квартира';
+    element.textContent = 'Квартира';
   } else if (object.offer.type === 'bungalo') {
-    type.textContent = 'Бунгало';
+    element.textContent = 'Бунгало';
   } else if (object.offer.type === 'house') {
-    type.textContent = 'Дом';
+    element.textContent = 'Дом';
   }
   return true;
 };
