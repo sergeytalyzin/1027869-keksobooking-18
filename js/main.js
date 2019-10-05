@@ -52,8 +52,7 @@ var generateFeatures = function (feautersTemplate) {
   var generatedFeatures = [];
 
   for (var i = 0; i < length; i++) {
-    var number = getRandom(feautersTemplate.length - 1);
-    generatedFeatures[i] = feautersTemplate[number];
+    generatedFeatures.push(feautersTemplate[i]);
   }
   return generatedFeatures;
 };
@@ -107,7 +106,6 @@ var generateArray = function () {
   return array;
 };
 
-
 var getContent = function (array, teamplate) {
   var fragmentPin = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
@@ -123,6 +121,57 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
+var getFlatCard = function (object, type) {
+  if (object.offer.type === 'palace') {
+    type.textContent = 'Дворец';
+  } else if (object.offer.type === 'flat') {
+    type.textContent = 'Квартира';
+  } else if (object.offer.type === 'bungalo') {
+    type.textContent = 'Бунгало';
+  } else if (object.offer.type === 'house') {
+    type.textContent = 'Дом';
+  }
+  return true;
+};
+
+var getFeaturesCard = function (massif) {
+  var fragmentFeatures = document.createDocumentFragment();
+  for (var i = 0; i < massif.offer.features.length; i++) {
+    var newElement = document.createElement('li');
+    newElement.className = 'popup__feature' + ' popup__feature--' + massif.offer.features[i];
+    fragmentFeatures.appendChild(newElement);
+  }
+  return fragmentFeatures;
+};
+
+var generteCard = function (array, template) {
+  var fragmentCard = document.createDocumentFragment();
+  for (var i = 0; i < array.length; i++) {
+    var newCard = template.cloneNode(true);
+    var newTitle = newCard.querySelector('.popup__title');
+    var newAddress = newCard.querySelector('.popup__text--address');
+    var newPrice = newCard.querySelector('.popup__text--price');
+    var newFlat = newCard.querySelector('.popup__type');
+    var numberGuestRooms = newCard.querySelector('.popup__text--capacity');
+    var chekinOut = newCard.querySelector('.popup__text--time');
+    var newFeatures = newCard.querySelector('.popup__features ');
+    var newDescription = newCard.querySelector('.popup__description');
+    var newPhoto = newCard.querySelector('.popup__photo');
+    var newAvatar = newCard.querySelector('.popup__avatar');
+    newTitle.textContent = array[i].offer.title;
+    newAddress.textContent = array[i].offer.address;
+    newPrice.textContent = array[i].offer.price + '₽/ночь';
+    newFlat = getFlatCard(array[i], newFlat);
+    numberGuestRooms.textContent = array[i].offer.rooms + ' комнаты для ' + array[i].offer.guests + 'гостей';
+    chekinOut.textContent = 'Заезд после ' + array[i].offer.checkin + ' , выезд до ' + array[i].offer.checkout;
+    newFeatures.appendChild(getFeaturesCard(array[i]));
+    newDescription.textContent = array[i].offer.description;
+    newPhoto.setAttribute('src', array[i].offer.photos);
+    newAvatar.setAttribute('src', array[i].author.avatar);
+  }
+  return fragmentCard;
+};
+
 var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var teamplatePin = document.querySelector('#pin')
@@ -130,6 +179,17 @@ var teamplatePin = document.querySelector('#pin')
   .querySelector('.map__pin');
 
 map.classList.remove('map--faded');
+
 var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
 advertPin.appendChild(content);
+
+var templateCard = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
+
+var card = generteCard(appartments, templateCard);
+map.insertBefore(card, mapFiltersContainer);
+
+
