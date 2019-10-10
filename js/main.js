@@ -22,7 +22,7 @@ var getRandom = function (number, add) {
 };
 
 var generateFlat = function () {
-  return FLAT_TYPE[getRandom(3)];
+  return FLAT_TYPE[getRandom(FLAT_TYPE.length - 1)];
 };
 
 var generateCordinate = function (cloudx, cloudy) {
@@ -121,21 +121,17 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
-var getFlatCard = function (objectType, element) {
+var getFlatCard = function (objectType) {
   switch (objectType.offer.type) {
     case 'palace':
-      element.textContent = 'Дворец';
-      break;
+      return 'Дворец';
     case 'bungalo':
-      element.textContent = 'Бунгало';
-      break;
+      return 'Бунгало';
     case 'house':
-      element.textContent = 'Дом';
-      break;
+      return 'Дом';
     default:
-      element.textContent = 'Квартира';
+      return 'Квартира';
   }
-  return element.textContent;
 };
 
 var getFeaturesCard = function (massif) {
@@ -149,7 +145,6 @@ var getFeaturesCard = function (massif) {
 };
 
 var generateCard = function (object, template) {
-  var fragmentCard = document.createDocumentFragment();
   var newCard = template.cloneNode(true);
   var newTitle = newCard.querySelector('.popup__title');
   var newAddress = newCard.querySelector('.popup__text--address');
@@ -164,16 +159,15 @@ var generateCard = function (object, template) {
   newTitle.textContent = object.offer.title;
   newAddress.textContent = object.offer.address;
   newPrice.textContent = object.offer.price + ' ₽/ночь';
-  newFlat = getFlatCard(object, newFlat);
+  newFlat.textContent = getFlatCard(object);
   numberGuestRooms.textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
   chekinOut.textContent = 'Заезд после ' + object.offer.checkin + ' , выезд до ' + object.offer.checkout;
   newFeatures.appendChild(getFeaturesCard(object));
   newDescription.textContent = object.offer.description;
   newPhoto.setAttribute('src', object.offer.photos);
   newAvatar.setAttribute('src', object.author.avatar);
-  fragmentCard.appendChild(newCard);
 
-  return fragmentCard;
+  return newCard;
 };
 
 var advertPin = document.querySelector('.map__pins');
