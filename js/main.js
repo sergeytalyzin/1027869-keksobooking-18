@@ -134,11 +134,11 @@ var getFlatCard = function (objectType) {
   }
 };
 
-var getFeaturesCard = function (massif) {
+var getFeaturesCard = function (data) {
   var fragmentFeatures = document.createDocumentFragment();
-  for (var i = 0; i < massif.offer.features.length; i++) {
+  for (var i = 0; i < data.offer.features.length; i++) {
     var newElement = document.createElement('li');
-    newElement.className = 'popup__feature' + ' popup__feature--' + massif.offer.features[i];
+    newElement.className = 'popup__feature' + ' popup__feature--' + data.offer.features[i];
     fragmentFeatures.appendChild(newElement);
   }
   return fragmentFeatures;
@@ -162,6 +162,7 @@ var generateCard = function (object, template) {
   newFlat.textContent = getFlatCard(object);
   numberGuestRooms.textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
   chekinOut.textContent = 'Заезд после ' + object.offer.checkin + ' , выезд до ' + object.offer.checkout;
+  newFeatures.innerHTML = "";
   newFeatures.appendChild(getFeaturesCard(object));
   newDescription.textContent = object.offer.description;
   newPhoto.setAttribute('src', object.offer.photos);
