@@ -162,7 +162,7 @@ var generateCard = function (object, template) {
   newFlat.textContent = getFlatCard(object);
   numberGuestRooms.textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
   chekinOut.textContent = 'Заезд после ' + object.offer.checkin + ' , выезд до ' + object.offer.checkout;
-  newFeatures.innerHTML = "";
+  newFeatures.innerHTML = '';
   newFeatures.appendChild(getFeaturesCard(object));
   newDescription.textContent = object.offer.description;
   newPhoto.setAttribute('src', object.offer.photos);
