@@ -16,13 +16,13 @@ var CLOUD_Y = 0;
 var CHEKINOUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEAUTERS_TEMPLATE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
-var generateFlat = function () {
-  return FLAT_TYPE[Math.round((Math.random() * 4))];
-};
-
 var getRandom = function (number, add) {
   add = add || 0;
   return Math.round(Math.random() * number) + add;
+};
+
+var generateFlat = function () {
+  return FLAT_TYPE[getRandom(FLAT_TYPE.length - 1)];
 };
 
 var generateCordinate = function (cloudx, cloudy) {
@@ -36,11 +36,11 @@ var generatePrice = function () {
 };
 
 var generateRooms = function () {
-  return getRandom(4) + 1;
+  return getRandom(4, 1);
 };
 
 var generateGuest = function () {
-  return getRandom(7);
+  return getRandom(7, 1);
 };
 
 var generateCheckinOutTime = function () {
@@ -52,8 +52,7 @@ var generateFeatures = function (feautersTemplate) {
   var generatedFeatures = [];
 
   for (var i = 0; i < length; i++) {
-    var number = getRandom(feautersTemplate.length - 1);
-    generatedFeatures[i] = feautersTemplate[number];
+    generatedFeatures.push(feautersTemplate[i]);
   }
   return generatedFeatures;
 };
@@ -107,7 +106,6 @@ var generateArray = function () {
   return array;
 };
 
-
 var getContent = function (array, teamplate) {
   var fragmentPin = document.createDocumentFragment();
   for (var i = 0; i < array.length; i++) {
@@ -123,6 +121,56 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
+var getFlatCard = function (objectType) {
+  switch (objectType.offer.type) {
+    case 'palace':
+      return 'Дворец';
+    case 'bungalo':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    default:
+      return 'Квартира';
+  }
+};
+
+var getFeaturesCard = function (data) {
+  var fragmentFeatures = document.createDocumentFragment();
+  for (var i = 0; i < data.offer.features.length; i++) {
+    var newElement = document.createElement('li');
+    newElement.className = 'popup__feature' + ' popup__feature--' + data.offer.features[i];
+    fragmentFeatures.appendChild(newElement);
+  }
+  return fragmentFeatures;
+};
+
+var generateCard = function (object, template) {
+  var newCard = template.cloneNode(true);
+  var newTitle = newCard.querySelector('.popup__title');
+  var newAddress = newCard.querySelector('.popup__text--address');
+  var newPrice = newCard.querySelector('.popup__text--price');
+  var newFlat = newCard.querySelector('.popup__type');
+  var numberGuestRooms = newCard.querySelector('.popup__text--capacity');
+  var chekinOut = newCard.querySelector('.popup__text--time');
+  var newFeatures = newCard.querySelector('.popup__features ');
+  var newDescription = newCard.querySelector('.popup__description');
+  var newPhoto = newCard.querySelector('.popup__photo');
+  var newAvatar = newCard.querySelector('.popup__avatar');
+  newTitle.textContent = object.offer.title;
+  newAddress.textContent = object.offer.address;
+  newPrice.textContent = object.offer.price + ' ₽/ночь';
+  newFlat.textContent = getFlatCard(object);
+  numberGuestRooms.textContent = object.offer.rooms + ' комнаты для ' + object.offer.guests + ' гостей';
+  chekinOut.textContent = 'Заезд после ' + object.offer.checkin + ' , выезд до ' + object.offer.checkout;
+  newFeatures.innerHTML = '';
+  newFeatures.appendChild(getFeaturesCard(object));
+  newDescription.textContent = object.offer.description;
+  newPhoto.setAttribute('src', object.offer.photos);
+  newAvatar.setAttribute('src', object.author.avatar);
+
+  return newCard;
+};
+
 var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var teamplatePin = document.querySelector('#pin')
@@ -130,6 +178,17 @@ var teamplatePin = document.querySelector('#pin')
   .querySelector('.map__pin');
 
 map.classList.remove('map--faded');
+
 var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
 advertPin.appendChild(content);
+
+var templateCard = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
+var mapFiltersContainer = map.querySelector('.map__filters-container');
+
+var card = generateCard(appartments[2], templateCard);
+map.insertBefore(card, mapFiltersContainer);
+
+
