@@ -174,36 +174,6 @@ var generateCard = function (object, template) {
   return newCard;
 };
 
-
-
-/*var advertPin = document.querySelector('.map__pins');
-var map = document.querySelector('.map');
-var teamplatePin = document.querySelector('#pin')
-  .content
-  .querySelector('.map__pin');
-
-map.classList.remove('map--faded');
-
-var appartments = generateArray();
-var content = getContent(appartments, teamplatePin);
-advertPin.appendChild(content);
-
-var templateCard = document.querySelector('#card')
-  .content
-  .querySelector('.map__card');
-var mapFiltersContainer = map.querySelector('.map__filters-container');
-
-var card = generateCard(appartments[2], templateCard);
-map.insertBefore(card, mapFiltersContainer);*/
-
-var deactivationPin = function () {
-  for (var i = 0; i < adFormElements.length; i++) {
-    adFormElements[i].setAttribute('disabled', 'disabled');
-  }
-  mapFiltres.setAttribute('disabled', 'disabled');
-  adFormHeader.setAttribute('disabled', 'disabled');
-};
-
 var activationPin = function () {
   for (var i = 0; i < adFormElements.length; i++) {
     adFormElements[i].removeAttribute('disabled');
@@ -213,11 +183,23 @@ var activationPin = function () {
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
 
-  var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
-  var coordY = buttonPin.getBoundingClientRect().y + Y_PIN;
-
-  address.setAttribute('value', coordX + ', ' + coordY);
+  findCoordination(address);
 };
+
+var deactivationPin = function () {
+  for (var i = 0; i < adFormElements.length; i++) {
+    adFormElements[i].setAttribute('disabled', 'disabled');
+  }
+  mapFiltres.setAttribute('disabled', 'disabled');
+  adFormHeader.setAttribute('disabled', 'disabled');
+};
+
+var findCoordination = function (elem) {
+  var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
+  var coordY = buttonPin.getBoundingClientRect().y + Y_PIN + pageYOffset;
+  return elem.setAttribute('value', coordX + ', ' + coordY);
+};
+
 var onErrorRoomGuest = function () {
   numberRooms.setCustomValidity('');
   numberGuests.setCustomValidity('');
@@ -227,8 +209,25 @@ var onErrorRoomGuest = function () {
   }
 };
 
-var adFormHeader = document.querySelector('.ad-form-header');
+// var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
+var teamplatePin = document.querySelector('#pin')
+  .content
+  .querySelector('.map__pin');
+
+var appartments = generateArray();
+var content = getContent(appartments, teamplatePin);
+// advertPin.appendChild(content);
+
+var templateCard = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
+// var mapFiltersContainer = map.querySelector('.map__filters-container');
+
+var card = generateCard(appartments[2], templateCard);
+// map.insertBefore(card, mapFiltersContainer);
+
+var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
 var mapFiltres = document.querySelector('.map__filters');
 var address = document.querySelector('#address');
@@ -239,11 +238,11 @@ var adForm = document.querySelector('.ad-form');
 
 deactivationPin();
 
-buttonPin.addEventListener('mousedown', function() {
+buttonPin.addEventListener('mousedown', function () {
   activationPin();
 });
 
-buttonPin.addEventListener('keydown', function(evt) {
+buttonPin.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
     activationPin();
   }
