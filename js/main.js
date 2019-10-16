@@ -182,7 +182,7 @@ var activationPin = function () {
   adFormHeader.removeAttribute('disabled');
   map.classList.remove('map--faded');
   adForm.classList.remove('ad-form--disabled');
-
+  advertPin.appendChild(content);
   findCoordination(address);
 };
 
@@ -217,7 +217,7 @@ var teamplatePin = document.querySelector('#pin')
 
 var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
-advertPin.appendChild(content);
+
 
 /* var templateCard = document.querySelector('#card')
   .content
