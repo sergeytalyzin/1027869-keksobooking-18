@@ -124,7 +124,7 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
-var getFlatCard = function (objectType) {
+/* var getFlatCard = function (objectType) {
   switch (objectType.offer.type) {
     case 'palace':
       return 'Дворец';
@@ -172,7 +172,7 @@ var generateCard = function (object, template) {
   newAvatar.setAttribute('src', object.author.avatar);
 
   return newCard;
-};
+};*/
 
 var activationPin = function () {
   for (var i = 0; i < adFormElements.length; i++) {
@@ -203,13 +203,13 @@ var findCoordination = function (elem) {
 var onErrorRoomGuest = function () {
   numberRooms.setCustomValidity('');
   numberGuests.setCustomValidity('');
-  if (numberRooms.value < numberGuests.value) {
-    numberGuests.setCustomValidity('Слишком много гостей');
-    numberRooms.setCustomValidity('Мало комнат');
+  if (numberRooms.value !== numberGuests.value) {
+    numberGuests.setCustomValidity('Колчество не совпадает');
+    numberRooms.setCustomValidity('Колчество не совпадает');
   }
 };
 
-// var advertPin = document.querySelector('.map__pins');
+var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var teamplatePin = document.querySelector('#pin')
   .content
@@ -217,15 +217,15 @@ var teamplatePin = document.querySelector('#pin')
 
 var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
-// advertPin.appendChild(content);
+advertPin.appendChild(content);
 
-var templateCard = document.querySelector('#card')
+/* var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
-// var mapFiltersContainer = map.querySelector('.map__filters-container');
+ var mapFiltersContainer = map.querySelector('.map__filters-container');
 
-var card = generateCard(appartments[2], templateCard);
-// map.insertBefore(card, mapFiltersContainer);
+ var card = generateCard(appartments[2], templateCard);
+ map.insertBefore(card, mapFiltersContainer);*/
 
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
