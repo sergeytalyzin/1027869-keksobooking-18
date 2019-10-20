@@ -124,7 +124,7 @@ var getContent = function (array, teamplate) {
   return fragmentPin;
 };
 
-/* var getFlatCard = function (objectType) {
+var getFlatCard = function (objectType) {
   switch (objectType.offer.type) {
     case 'palace':
       return 'Дворец';
@@ -172,7 +172,7 @@ var generateCard = function (object, template) {
   newAvatar.setAttribute('src', object.author.avatar);
 
   return newCard;
-};*/
+};
 
 var activationPin = function () {
   for (var i = 0; i < adFormElements.length; i++) {
@@ -204,8 +204,8 @@ var onErrorRoomGuest = function () {
   numberRooms.setCustomValidity('');
   numberGuests.setCustomValidity('');
   if (numberRooms.value !== numberGuests.value) {
-    numberGuests.setCustomValidity('Колчество не совпадает');
-    numberRooms.setCustomValidity('Колчество не совпадает');
+    numberGuests.setCustomValidity('Количество не совпадает');
+    numberRooms.setCustomValidity('Количество не совпадает');
   }
 };
 
@@ -219,13 +219,13 @@ var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
 
 
-/* var templateCard = document.querySelector('#card')
+var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
- var mapFiltersContainer = map.querySelector('.map__filters-container');
+// var mapFiltersContainer = map.querySelector('.map__filters-container');
 
- var card = generateCard(appartments[2], templateCard);
- map.insertBefore(card, mapFiltersContainer);*/
+generateCard(appartments[2], templateCard); // было записанно в переменную card
+// map.insertBefore(card, mapFiltersContainer);
 
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
@@ -235,6 +235,7 @@ var buttonPin = document.querySelector('.map__pin--main');
 var numberGuests = document.querySelector('#capacity');
 var numberRooms = document.querySelector('#room_number');
 var adForm = document.querySelector('.ad-form');
+var buttonSubmit = document.querySelector('.ad-form__submit');
 
 deactivationPin();
 
@@ -251,3 +252,5 @@ buttonPin.addEventListener('keydown', function (evt) {
 numberGuests.addEventListener('change', onErrorRoomGuest);
 
 numberRooms.addEventListener('change', onErrorRoomGuest);
+
+buttonSubmit.addEventListener('click', onErrorRoomGuest);
