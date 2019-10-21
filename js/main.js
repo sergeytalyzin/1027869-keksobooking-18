@@ -203,7 +203,13 @@ var findCoordination = function (elem) {
 var onErrorRoomGuest = function () {
   numberRooms.setCustomValidity('');
   numberGuests.setCustomValidity('');
-  if (numberRooms.value !== numberGuests.value) {
+
+  if ((+numberRooms.value === 100 && +numberGuests.value !== 0) || (+numberRooms.value !== 100 && +numberGuests.value === 0)) {
+    numberGuests.setCustomValidity('Количество не совпадает');
+    numberRooms.setCustomValidity('Количество не совпадает');
+
+  }
+  if (+numberRooms.value < +numberGuests.value) {
     numberGuests.setCustomValidity('Количество не совпадает');
     numberRooms.setCustomValidity('Количество не совпадает');
   }
