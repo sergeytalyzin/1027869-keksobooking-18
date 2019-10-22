@@ -15,6 +15,9 @@ var CLOUD_X = 0;
 var CLOUD_Y = 0;
 var CHEKINOUT_TIMES = ['12:00', '13:00', '14:00'];
 var FEAUTERS_TEMPLATE = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var ENTER_KEYCODE = 13;
+var X_PIN = 32;
+var Y_PIN = 75;
 
 var getRandom = function (number, add) {
   add = add || 0;
@@ -171,24 +174,89 @@ var generateCard = function (object, template) {
   return newCard;
 };
 
+var activationPin = function () {
+  for (var i = 0; i < adFormElements.length; i++) {
+    adFormElements[i].removeAttribute('disabled');
+  }
+  mapFiltres.removeAttribute('disabled');
+  adFormHeader.removeAttribute('disabled');
+  map.classList.remove('map--faded');
+  adForm.classList.remove('ad-form--disabled');
+  advertPin.appendChild(content);
+  findCoordination(address);
+};
+
+var deactivationPin = function () {
+  for (var i = 0; i < adFormElements.length; i++) {
+    adFormElements[i].setAttribute('disabled', 'disabled');
+  }
+  mapFiltres.setAttribute('disabled', 'disabled');
+  adFormHeader.setAttribute('disabled', 'disabled');
+};
+
+var findCoordination = function (elem) {
+  var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
+  var coordY = buttonPin.getBoundingClientRect().y + Y_PIN + pageYOffset;
+  return elem.setAttribute('value', coordX + ', ' + coordY);
+};
+
+var onErrorRoomGuest = function () {
+  numberRooms.setCustomValidity('');
+  numberGuests.setCustomValidity('');
+
+  if ((+numberRooms.value === 100 && +numberGuests.value !== 0) || (+numberRooms.value !== 100 && +numberGuests.value === 0)) {
+    numberGuests.setCustomValidity('Количество не совпадает');
+    numberRooms.setCustomValidity('Количество не совпадает');
+
+  }
+  if (+numberRooms.value < +numberGuests.value) {
+    numberGuests.setCustomValidity('Количество не совпадает');
+    numberRooms.setCustomValidity('Количество не совпадает');
+  }
+};
+
 var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var teamplatePin = document.querySelector('#pin')
   .content
   .querySelector('.map__pin');
 
-map.classList.remove('map--faded');
-
 var appartments = generateArray();
 var content = getContent(appartments, teamplatePin);
-advertPin.appendChild(content);
+
 
 var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
-var mapFiltersContainer = map.querySelector('.map__filters-container');
+// var mapFiltersContainer = map.querySelector('.map__filters-container');
 
-var card = generateCard(appartments[2], templateCard);
-map.insertBefore(card, mapFiltersContainer);
+generateCard(appartments[2], templateCard); // было записанно в переменную card
+// map.insertBefore(card, mapFiltersContainer);
 
+var adFormHeader = document.querySelector('.ad-form-header');
+var adFormElements = document.querySelectorAll('.ad-form__element');
+var mapFiltres = document.querySelector('.map__filters');
+var address = document.querySelector('#address');
+var buttonPin = document.querySelector('.map__pin--main');
+var numberGuests = document.querySelector('#capacity');
+var numberRooms = document.querySelector('#room_number');
+var adForm = document.querySelector('.ad-form');
+var buttonSubmit = document.querySelector('.ad-form__submit');
 
+deactivationPin();
+
+buttonPin.addEventListener('mousedown', function () {
+  activationPin();
+});
+
+buttonPin.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    activationPin();
+  }
+});
+
+numberGuests.addEventListener('change', onErrorRoomGuest);
+
+numberRooms.addEventListener('change', onErrorRoomGuest);
+
+buttonSubmit.addEventListener('click', onErrorRoomGuest);
