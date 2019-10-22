@@ -184,6 +184,21 @@ var activationPin = function () {
   adForm.classList.remove('ad-form--disabled');
   advertPin.appendChild(content);
   findCoordination(address);
+
+  var buttonCards = document.querySelectorAll('.map__pin');
+
+  for (var j = 0; j < appartments.length; j++) {
+    getButtonPin(appartments[j], buttonCards[j]);
+  }
+
+  var closeCards = document.querySelectorAll('.popup__close');
+  var mapCards = document.querySelectorAll('.map__card');
+
+  console.log(closeCards);
+  console.log(mapCards);
+  for (var k = 0; k < closeCards.length; k++) {
+    closeCard(closeCards[k], mapCards[k]);
+  }
 };
 
 var deactivationPin = function () {
@@ -228,10 +243,10 @@ var content = getContent(appartments, teamplatePin);
 var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
-// var mapFiltersContainer = map.querySelector('.map__filters-container');
+ var mapFiltersContainer = map.querySelector('.map__filters-container');
 
-generateCard(appartments[2], templateCard); // было записанно в переменную card
-// map.insertBefore(card, mapFiltersContainer);
+//generateCard(appartments[2], templateCard);  было записанно в переменную card
+
 
 var adFormHeader = document.querySelector('.ad-form-header');
 var adFormElements = document.querySelectorAll('.ad-form__element');
@@ -260,3 +275,17 @@ numberGuests.addEventListener('change', onErrorRoomGuest);
 numberRooms.addEventListener('change', onErrorRoomGuest);
 
 buttonSubmit.addEventListener('click', onErrorRoomGuest);
+
+var getButtonPin = function (pin, buttoncard) {
+  buttoncard.addEventListener('click', function () {
+    var card = generateCard(pin, templateCard);
+    map.insertBefore(card, mapFiltersContainer);
+  });
+};
+
+var closeCard = function (element, card) {
+  element.addEventListener('click', function () {
+    card.classList.add('visually-hidden');
+  });
+};
+
