@@ -62,10 +62,10 @@ var generateFeatures = function (feautersTemplate) {
 };
 
 var generatePhotos = function () {
-  var arrayLength = getRandom(15);
+  var arrayLength = getRandom(4);
   var generatedPhotos = [];
   for (var i = 0; i < arrayLength; i++) {
-    generatedPhotos[i] = 'http://o0.github.io/assets/images/tokyo/hotel' + i + '.jpg';
+    generatedPhotos[i] = 'http://o0.github.io/assets/images/tokyo/hotel' + (i + 1) + '.jpg';
   }
   return generatedPhotos;
 };
@@ -158,6 +158,7 @@ var generateCard = function (object, template) {
   var chekinOut = newCard.querySelector('.popup__text--time');
   var newFeatures = newCard.querySelector('.popup__features ');
   var newDescription = newCard.querySelector('.popup__description');
+  var popupPhotos = newCard.querySelector('.popup__photos');
   var newPhoto = newCard.querySelector('.popup__photo');
   var newAvatar = newCard.querySelector('.popup__avatar');
   newTitle.textContent = object.offer.title;
@@ -169,11 +170,21 @@ var generateCard = function (object, template) {
   newFeatures.innerHTML = '';
   newFeatures.appendChild(getFeaturesCard(object));
   newDescription.textContent = object.offer.description;
-  newPhoto.setAttribute('src', object.offer.photos);
   newAvatar.setAttribute('src', object.author.avatar);
 
+  popupPhotos.innerHTML = '';
+
+  for (var i = 0; i < object.offer.photos.length; i++) {
+    var photo = newPhoto.cloneNode(true);
+    photo.src = object.offer.photos[i];
+    popupPhotos.appendChild(photo);
+  }
+
   return newCard;
+
 };
+
+
 
 var activationPin = function () {
   for (var i = 0; i < adFormElements.length; i++) {
