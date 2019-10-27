@@ -239,6 +239,73 @@ var closeCard = function () {
   document.addEventListener('keydown', onPopupEscPress);
 };
 
+var onPopupEscPress = function (evt) {
+  var mapCards = document.querySelector('.map__card');
+  if (evt.keyCode === ESC_KEYCODE) {
+    mapCards.remove();
+  }
+};
+
+var chackingNumberOfDigits = function () {
+  if (titleInput.validity.tooShort) {
+    titleInput.setCustomValidity('Имя должно состоять минимум из 30-и символов');
+  } else if (titleInput.validity.tooLong) {
+    titleInput.setCustomValidity('Имя должно состоять не более 100-а символов');
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+};
+
+var getTimeInOut = function (objectType) {
+  switch (objectType) {
+    case '12:00':
+      return '12:00';
+    case '13:00':
+      return '13:00';
+    default:
+      return '14:00';
+  }
+};
+
+var chackingTypeOfPrice = function () {
+  if (typeHousing.value === 'bungalo') {
+    price.setAttribute('placeholder', '0');
+  } else if (typeHousing.value === 'flat') {
+    price.setAttribute('placeholder', '1000');
+  } else if (typeHousing.value === 'house') {
+    price.setAttribute('placeholder', '5000');
+  } else if (typeHousing.value === 'palace') {
+    price.setAttribute('placeholder', '10000');
+  }
+};
+
+var onErrorPriceNumber = function () {
+  if (price.value > 1000000) {
+    price.setCustomValidity('очень Дорого');
+  } else {
+    price.setCustomValidity('');
+  }
+};
+
+var onChackingTypeOfPrice = function () {
+  price.setCustomValidity('');
+  if (typeHousing.value === 'flat') {
+    if (price.value < 1000) {
+      price.setCustomValidity('От 1000');
+    }
+  } else if (typeHousing.value === 'house') {
+    if (price.value < 5000) {
+      price.setCustomValidity('От 5000');
+    }
+  } else if (typeHousing.value === 'palace') {
+    if (price.value < 10000) {
+      price.setCustomValidity('От 10000');
+    }
+  }
+};
+
 var advertPin = document.querySelector('.map__pins');
 var map = document.querySelector('.map');
 var teamplatePin = document.querySelector('#pin')
@@ -292,25 +359,6 @@ numberRooms.addEventListener('change', onErrorRoomGuest);
 buttonSubmit.addEventListener('click', onErrorRoomGuest);
 
 
-
-var onPopupEscPress = function (evt) {
-  var mapCards = document.querySelector('.map__card');
-  if (evt.keyCode === ESC_KEYCODE) {
-    mapCards.remove();
-  }
-};
-var chackingNumberOfDigits = function () {
-  if (titleInput.validity.tooShort) {
-    titleInput.setCustomValidity('Имя должно состоять минимум из 30-и символов');
-  } else if (titleInput.validity.tooLong) {
-    titleInput.setCustomValidity('Имя должно состоять не более 100-а символов');
-  } else if (titleInput.validity.valueMissing) {
-    titleInput.setCustomValidity('Обязательное поле');
-  } else {
-    titleInput.setCustomValidity('');
-  }
-};
-
 titleInput.addEventListener('invalid', function () {
   chackingNumberOfDigits();
 });
@@ -324,25 +372,19 @@ titleInput.addEventListener('input', function (evt) {
   }
 });
 
-price.addEventListener('invalid', function () {
-  if(price.value > 1000000) {
-    price.setCustomValidity('очень Дорого');
-  }
+price.addEventListener('change', function () {
+  onErrorPriceNumber();
 });
+
+
 typeHousing.addEventListener('DOMcontentLoaded', function () {
   price.setAttribute('placeholder', '1000');
 });
+
 typeHousing.addEventListener('change', function () {
-  if(typeHousing.value === 'bungalo') {
-      price.setAttribute('placeholder', '0');
-  } else if(typeHousing.value === 'flat') {
-    price.setAttribute('placeholder', '1000');
-  } else if(typeHousing.value === 'house') {
-    price.setAttribute('placeholder', '5000');
-  } else if(typeHousing.value === 'palace') {
-    price.setAttribute('placeholder', '10000');
-  }
+  chackingTypeOfPrice();
 });
+
 
 timeIn.addEventListener('change', function () {
   timeOut.value = getTimeInOut(timeIn.value);
@@ -352,19 +394,15 @@ timeOut.addEventListener('change', function () {
   timeIn.value = getTimeInOut(timeOut.value);
 });
 
-var getTimeInOut = function (objectType) {
-  switch (objectType) {
-    case '12:00':
-      return '12:00';
-    case '13:00':
-      return '13:00';
-    default:
-      return '14:00';
-  }
-};
 
-/*form.addEventListener('submit', function (evt) {
+/* form.addEventListener('submit', function (evt) {
   if (!titleInput.value) {
     evt.preventDefault();
   }
 });*/
+
+
+
+
+price.addEventListener('change', onChackingTypeOfPrice);
+typeHousing.addEventListener('change',onChackingTypeOfPrice);
