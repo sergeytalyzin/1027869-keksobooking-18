@@ -394,15 +394,20 @@ timeOut.addEventListener('change', function () {
   timeIn.value = getTimeInOut(timeOut.value);
 });
 
-
-/* form.addEventListener('submit', function (evt) {
-  if (!titleInput.value) {
-    evt.preventDefault();
-  }
-});*/
-
-
-
-
 price.addEventListener('change', onChackingTypeOfPrice);
 typeHousing.addEventListener('change',onChackingTypeOfPrice);
+
+ form.addEventListener('submit', function (evt) {
+  if (!titleInput.value) {
+    evt.preventDefault();
+    console.log('Error');
+  }
+  if (!price.value) {
+    evt.preventDefault();
+    console.log('Error');
+  }
+   if (onErrorRoomGuest()){
+     evt.preventDefault();
+     console.log('Error');
+   }
+});
