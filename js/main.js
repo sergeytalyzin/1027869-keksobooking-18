@@ -377,7 +377,7 @@ price.addEventListener('change', function () {
 });
 
 
-typeHousing.addEventListener('DOMcontentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
   price.setAttribute('placeholder', '1000');
 });
 
@@ -395,19 +395,19 @@ timeOut.addEventListener('change', function () {
 });
 
 price.addEventListener('change', onChackingTypeOfPrice);
-typeHousing.addEventListener('change',onChackingTypeOfPrice);
+typeHousing.addEventListener('change', onChackingTypeOfPrice);
 
- form.addEventListener('submit', function (evt) {
+form.addEventListener('submit', function (evt) {
   if (!titleInput.value) {
     evt.preventDefault();
-    console.log('Error');
   }
   if (!price.value) {
     evt.preventDefault();
-    console.log('Error');
   }
-   if (onErrorRoomGuest()){
-     evt.preventDefault();
-     console.log('Error');
-   }
+  if (onErrorRoomGuest()) {
+    evt.preventDefault();
+  }
+  if (timeIn !== timeOut) {
+    evt.preventDefault();
+  }
 });
