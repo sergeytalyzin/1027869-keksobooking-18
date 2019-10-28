@@ -185,7 +185,6 @@ var generateCard = function (object, template) {
 };
 
 
-
 var activationPin = function () {
   for (var i = 0; i < adFormElements.length; i++) {
     adFormElements[i].removeAttribute('disabled');
@@ -235,8 +234,8 @@ var onErrorRoomGuest = function () {
 
 var getButtonPin = function (pin, buttoncard) {
   buttoncard.addEventListener('click', function () {
-    if(document.querySelector('.map__card')) {
-      document.querySelector('.map__card').remove()
+    if (document.querySelector('.map__card')) {
+      document.querySelector('.map__card').remove();
     }
     var card = generateCard(pin, templateCard);
     map.insertBefore(card, mapFiltersContainer);
@@ -257,6 +256,7 @@ var onPopupEscPress = function (evt) {
   var mapCards = document.querySelector('.map__card');
   if (evt.keyCode === ESC_KEYCODE) {
     mapCards.remove();
+    document.removeEventListener('keydown', onPopupEscPress);
   }
 };
 
@@ -411,7 +411,7 @@ form.addEventListener('submit', function (evt) {
   if (onErrorRoomGuest()) {
     evt.preventDefault();
   }
-  if (timeIn !== timeOut) {
+  if (timeIn.value !== timeOut.value) {
     evt.preventDefault();
   }
 });
