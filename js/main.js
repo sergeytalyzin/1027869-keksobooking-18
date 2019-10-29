@@ -234,8 +234,9 @@ var onErrorRoomGuest = function () {
 
 var getButtonPin = function (pin, buttoncard) {
   buttoncard.addEventListener('click', function () {
-    if (document.querySelector('.map__card')) {
-      document.querySelector('.map__card').remove();
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
     }
     var card = generateCard(pin, templateCard);
     map.insertBefore(card, mapFiltersContainer);
