@@ -1,0 +1,79 @@
+'use strict';
+(function () {
+  var ESC_KEYCODE = 27;
+  var X_PIN = 32;
+  var Y_PIN = 75;
+
+
+  window.deactivationPin = function () {
+    for (var i = 0; i < adFormElements.length; i++) {
+      adFormElements[i].setAttribute('disabled', 'disabled');
+    }
+    mapFiltres.setAttribute('disabled', 'disabled');
+    adFormHeader.setAttribute('disabled', 'disabled');
+  };
+
+  window.activationPin = function () {
+    for (var i = 0; i < adFormElements.length; i++) {
+      adFormElements[i].removeAttribute('disabled');
+    }
+    mapFiltres.removeAttribute('disabled');
+    adFormHeader.removeAttribute('disabled');
+    map.classList.remove('map--faded');
+    adForm.classList.remove('ad-form--disabled');
+    advertPin.appendChild(window.content);
+    findCoordination(address);
+
+    var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+
+    for (var j = 0; j < window.appartments.length; j++) {
+      getButtonPin(window.appartments[j], buttonCards[j]);
+    }
+  };
+
+  var findCoordination = function (elem) {
+    var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
+    var coordY = buttonPin.getBoundingClientRect().y + Y_PIN + pageYOffset;
+    return elem.setAttribute('value', coordX + ', ' + coordY);
+  };
+  var getButtonPin = function (pin, buttoncard) {
+    buttoncard.addEventListener('click', function () {
+      var mapCard = document.querySelector('.map__card');
+      if (mapCard) {
+        mapCard.remove();
+      }
+      var card = window.generateCard(pin, templateCard);
+      map.insertBefore(card, mapFiltersContainer);
+      closeCard();
+    });
+  };
+  var closeCard = function () {
+    var closeCards = document.querySelector('.popup__close');
+    var mapCards = document.querySelector('.map__card');
+    closeCards.addEventListener('click', function () {
+      mapCards.remove();
+    });
+    document.addEventListener('keydown', onPopupEscPress);
+  };
+
+  var onPopupEscPress = function (evt) {
+    var mapCards = document.querySelector('.map__card');
+    if (evt.keyCode === ESC_KEYCODE) {
+      mapCards.remove();
+      document.removeEventListener('keydown', onPopupEscPress);
+    }
+  };
+
+  var templateCard = document.querySelector('#card')
+  .content
+  .querySelector('.map__card');
+  var buttonPin = document.querySelector('.map__pin--main');
+  var mapFiltersContainer = document.querySelector('.map__filters-container');
+  var adForm = document.querySelector('.ad-form');
+  var mapFiltres = document.querySelector('.map__filters');
+  var adFormHeader = document.querySelector('.ad-form-header');
+  var adFormElements = document.querySelectorAll('.ad-form__element');
+  var advertPin = document.querySelector('.map__pins');
+  var map = document.querySelector('.map');
+  var address = document.querySelector('#address');
+})();
