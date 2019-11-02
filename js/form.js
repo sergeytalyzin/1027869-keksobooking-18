@@ -12,6 +12,7 @@
   var typeHousing = document.querySelector('#type');
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
+  var activateMap = window.map.activationPin;
 
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');
@@ -39,14 +40,15 @@
   };
 
   var chackingTypeOfPrice = function () {
-    if (typeHousing.value === 'bungalo') {
-      price.setAttribute('placeholder', '0');
-    } else if (typeHousing.value === 'flat') {
-      price.setAttribute('placeholder', '1000');
-    } else if (typeHousing.value === 'house') {
-      price.setAttribute('placeholder', '5000');
-    } else if (typeHousing.value === 'palace') {
-      price.setAttribute('placeholder', '10000');
+    switch (typeHousing.value) {
+      case 'flat':
+        return price.setAttribute('placeholder', '1000');
+      case 'house':
+        return price.setAttribute('placeholder', '5000');
+      case 'palace' :
+        return price.setAttribute('placeholder', '10000');
+      default :
+        return price.setAttribute('placeholder', '0');
     }
   };
 
@@ -77,12 +79,12 @@
 
 
   buttonPin.addEventListener('mousedown', function () {
-    window.activationPin();
+    activateMap();
   });
 
   buttonPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      window.activationPin();
+      activateMap();
     }
   });
 

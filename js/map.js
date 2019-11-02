@@ -3,9 +3,9 @@
   var ESC_KEYCODE = 27;
   var X_PIN = 32;
   var Y_PIN = 75;
+  var createCard = window.generateCard.createCard;
 
-
-  window.deactivationPin = function () {
+  var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].setAttribute('disabled', 'disabled');
     }
@@ -13,7 +13,7 @@
     adFormHeader.setAttribute('disabled', 'disabled');
   };
 
-  window.activationPin = function () {
+  var activationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].removeAttribute('disabled');
     }
@@ -42,7 +42,7 @@
       if (mapCard) {
         mapCard.remove();
       }
-      var card = window.generateCard(pin, templateCard);
+      var card = createCard(pin, templateCard);
       map.insertBefore(card, mapFiltersContainer);
       closeCard();
     });
@@ -76,4 +76,9 @@
   var advertPin = document.querySelector('.map__pins');
   var map = document.querySelector('.map');
   var address = document.querySelector('#address');
+
+  window.map = {
+    activationPin,
+    deactivationPin
+  }
 })();

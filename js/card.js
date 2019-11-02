@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  window.generateCard = function (object, template) {
+    var createCard = function (object, template) {
     var newCard = template.cloneNode(true);
     var newTitle = newCard.querySelector('.popup__title');
     var newAddress = newCard.querySelector('.popup__text--address');
@@ -23,18 +23,14 @@
     newFeatures.appendChild(getFeaturesCard(object));
     newDescription.textContent = object.offer.description;
     newAvatar.setAttribute('src', object.author.avatar);
-
     popupPhotos.innerHTML = '';
-
     for (var i = 0; i < object.offer.photos.length; i++) {
       var photo = newPhoto.cloneNode(true);
       photo.src = object.offer.photos[i];
       popupPhotos.appendChild(photo);
     }
-
     return newCard;
-
-  };
+    };
 
   var getFlatCard = function (objectType) {
     switch (objectType.offer.type) {
@@ -59,4 +55,7 @@
     return fragmentFeatures;
   };
 
+  window.generateCard = {
+    createCard
+  }
 })();

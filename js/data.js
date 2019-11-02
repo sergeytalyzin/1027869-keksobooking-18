@@ -60,7 +60,7 @@
   };
 
   var generatePhotos = function () {
-    var arrayLength = getRandom(4);
+    var arrayLength = getRandom(3);
     var generatedPhotos = [];
     for (var i = 0; i < arrayLength; i++) {
       generatedPhotos[i] = 'http://o0.github.io/assets/images/tokyo/hotel' + (i + 1) + '.jpg';
