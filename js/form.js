@@ -2,6 +2,7 @@
 (function () {
   var ENTER_KEYCODE = 13;
 
+
   var buttonPin = document.querySelector('.map__pin--main');
   var numberGuests = document.querySelector('#capacity');
   var numberRooms = document.querySelector('#room_number');
@@ -13,6 +14,7 @@
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var activateMap = window.map.activationPin;
+
 
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');

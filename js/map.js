@@ -22,7 +22,7 @@
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
     advertPin.appendChild(window.content);
-    findCoordination(address);
+    findCoordination(window.address);
 
     var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
@@ -30,6 +30,7 @@
       getButtonPin(window.appartments[j], buttonCards[j]);
     }
   };
+
 
   var findCoordination = function (elem) {
     var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
@@ -75,10 +76,11 @@
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var advertPin = document.querySelector('.map__pins');
   var map = document.querySelector('.map');
-  var address = document.querySelector('#address');
+  window.address = document.querySelector('#address');
 
   window.map = {
-    activationPin,
-    deactivationPin
-  }
+    activationPin: activationPin,
+    deactivationPin: deactivationPin,
+    findCoordination: findCoordination
+  };
 })();

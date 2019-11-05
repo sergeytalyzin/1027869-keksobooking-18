@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-    var createCard = function (object, template) {
+  var createCard = function (object, template) {
     var newCard = template.cloneNode(true);
     var newTitle = newCard.querySelector('.popup__title');
     var newAddress = newCard.querySelector('.popup__text--address');
@@ -30,7 +30,7 @@
       popupPhotos.appendChild(photo);
     }
     return newCard;
-    };
+  };
 
   var getFlatCard = function (objectType) {
     switch (objectType.offer.type) {
@@ -56,6 +56,6 @@
   };
 
   window.generateCard = {
-    createCard
-  }
+    createCard: createCard
+  };
 })();
