@@ -81,9 +81,11 @@
     }
   };
 
+  buttonPin.addEventListener('mousedown', function () {
+    activateMap();
+  });
 
   buttonPin.addEventListener('mousedown', function (evt) {
-    activateMap();
     evt.preventDefault();
     var startCoords = {
       x: evt.clientX,
@@ -104,15 +106,15 @@
       if ((buttonPin.offsetTop - shift.y) < mapOverlay.offsetTop) {
         buttonPin.style.top = mapOverlay.offsetTop + 'px';
       } else if ((buttonPin.offsetTop - shift.y) > mapOverlay.offsetHeight - HEIGTH_PIN) {
-        buttonPin.style.top = mapOverlay.offsetHeight - HEIGTH_PIN  + 'px';
+        buttonPin.style.top = mapOverlay.offsetHeight - HEIGTH_PIN + 'px';
       } else {
         buttonPin.style.top = (buttonPin.offsetTop - shift.y) + 'px';
       }
 
       if ((buttonPin.offsetLeft - shift.x) < mapOverlay.offsetLeft) {
-        buttonPin.style.left = mapOverlay.offsetLeft  + 'px';
+        buttonPin.style.left = mapOverlay.offsetLeft + 'px';
       } else if ((buttonPin.offsetLeft - shift.x) > mapOverlay.offsetWidth - WIDTH_PIN) {
-        buttonPin.style.left = mapOverlay.offsetWidth - WIDTH_PIN  + 'px';
+        buttonPin.style.left = mapOverlay.offsetWidth - WIDTH_PIN + 'px';
       } else {
         buttonPin.style.left = (buttonPin.offsetLeft - shift.x) + 'px';
       }
