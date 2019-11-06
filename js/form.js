@@ -81,9 +81,12 @@
     }
   };
 
-  buttonPin.addEventListener('mousedown', function () {
+  var onActivateMap = function () {
     activateMap();
-  });
+    buttonPin.removeEventListener('mousedown', onActivateMap);
+  };
+
+  buttonPin.addEventListener('mousedown', onActivateMap);
 
   buttonPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
