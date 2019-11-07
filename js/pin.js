@@ -26,7 +26,7 @@
   // window.content = getContent(appartments, teamplatePin);
   var onError = function () {
     var a = teamplateError.cloneNode(true);
-    return a;
+    document.body.appendChild(a);
   };
   window.load(url, getContent, onError);
 
