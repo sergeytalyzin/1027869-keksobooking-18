@@ -1,7 +1,8 @@
 'use strict';
 (function () {
   var ENTER_KEYCODE = 13;
-
+  var WIDTH_PIN = 50;
+  var HEIGTH_PIN = 70;
 
   var buttonPin = document.querySelector('.map__pin--main');
   var numberGuests = document.querySelector('#capacity');
@@ -14,7 +15,8 @@
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
   var activateMap = window.map.activationPin;
-
+  var findCoordination = window.map.findCoordination;
+  var mapOverlay = document.querySelector('.map__overlay');
 
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');
@@ -79,9 +81,56 @@
     }
   };
 
-
-  buttonPin.addEventListener('mousedown', function () {
+  var onActivateMap = function () {
     activateMap();
+    buttonPin.removeEventListener('mousedown', onActivateMap);
+  };
+
+  buttonPin.addEventListener('mousedown', onActivateMap);
+
+  buttonPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      if ((buttonPin.offsetTop - shift.y) < mapOverlay.offsetTop) {
+        buttonPin.style.top = mapOverlay.offsetTop + 'px';
+      } else if ((buttonPin.offsetTop - shift.y) > mapOverlay.offsetHeight - HEIGTH_PIN) {
+        buttonPin.style.top = mapOverlay.offsetHeight - HEIGTH_PIN + 'px';
+      } else {
+        buttonPin.style.top = (buttonPin.offsetTop - shift.y) + 'px';
+      }
+
+      if ((buttonPin.offsetLeft - shift.x) < mapOverlay.offsetLeft) {
+        buttonPin.style.left = mapOverlay.offsetLeft + 'px';
+      } else if ((buttonPin.offsetLeft - shift.x) > mapOverlay.offsetWidth - WIDTH_PIN) {
+        buttonPin.style.left = mapOverlay.offsetWidth - WIDTH_PIN + 'px';
+      } else {
+        buttonPin.style.left = (buttonPin.offsetLeft - shift.x) + 'px';
+      }
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+      findCoordination(window.address);
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 
   buttonPin.addEventListener('keydown', function (evt) {
