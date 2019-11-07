@@ -27,7 +27,7 @@
     var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     for (var j = 0; j < window.appartments.length; j++) {
-      getButtonPin(window.appartments[j], buttonCards[j]);
+      getButtonPin(window.data[j], buttonCards[j]);
     }
   };
 
