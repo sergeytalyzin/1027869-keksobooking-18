@@ -1,5 +1,7 @@
 'use strict';
 (function () {
+  var load = window.xhr.load;
+
   var getContent = function (array) {
     var fragmentPin = document.createDocumentFragment();
     for (var i = 0; i < array.length; i++) {
@@ -11,9 +13,11 @@
       imagePin.setAttribute('alt', array[i].offer.title);
 
       fragmentPin.appendChild(newPin);
+      window.content = fragmentPin;
     }
-    return fragmentPin;
+    return window.content;
   };
+
 
   var teamplatePin = document.querySelector('#pin')
     .content
@@ -23,11 +27,9 @@
     .querySelector('.error');
 
   var url = 'https://js.dump.academy/keksobooking/data';
-  // window.content = getContent(appartments, teamplatePin);
   var onError = function () {
     var a = teamplateError.cloneNode(true);
     document.body.appendChild(a);
   };
-  window.load(url, getContent, onError);
-
+  load(url, getContent, onError);
 })();

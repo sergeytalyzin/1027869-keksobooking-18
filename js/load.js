@@ -1,15 +1,13 @@
 'use strict';
 (function () {
-
-
-  window.load = function (url, onSuccess, onError) {
+  var load = function (url, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
       switch (xhr.status) {
         case 200:
-          window.content = onSuccess(xhr.response);
+          onSuccess(xhr.response);
           window.data = xhr.response;
           break;
         default:
@@ -28,6 +26,8 @@
 
     xhr.open('get', url);
     xhr.send();
-
+  };
+  window.xhr = {
+    load: load
   };
 })();
