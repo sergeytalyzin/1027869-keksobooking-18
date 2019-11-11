@@ -14,10 +14,11 @@
   var typeHousing = document.querySelector('#type');
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
+  var mapOverlay = document.querySelector('.map__overlay');
+  var description = document.querySelector('#description');
   var activatePin = window.map.activationPin;
   var deactivatePin = window.map.deactivationPin;
   var findCoordination = window.map.findCoordination;
-  var mapOverlay = document.querySelector('.map__overlay');
   var load = window.backend.load;
   var save = window.backend.save;
 
@@ -98,8 +99,20 @@
     document.body.appendChild(error);
   };
 
+  var resetFieldset = function () {
+    var checkbox = document.querySelectorAll('.feature__checkbox');
+    for (var i = 0; i < checkbox.length; i++) {
+      checkbox[i].checked = false;
+    }
+    titleInput.value = '';
+    price.value = '';
+    description.value = '';
+  };
+
   var onSuccess = function () {
+    resetFieldset();
     deactivatePin();
+    buttonPin.addEventListener('mousedown', onActivateMap);
     var successfully = teamplateSuccess.cloneNode(true);
     document.addEventListener('keydown', function (evt) {
       window.map.escPress(evt, function () {
@@ -109,16 +122,18 @@
     document.body.appendChild(successfully);
   };
 
+
+  var onActivateMap = function () {
+    load(activatePin, onError);
+    buttonPin.removeEventListener('mousedown', onActivateMap);
+  };
+
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
     window.address.removeAttribute('disabled');
     save(new FormData(form), onSuccess, onError);
   });
 
-  var onActivateMap = function () {
-    load(activatePin, onError);
-    buttonPin.removeEventListener('mousedown', onActivateMap);
-  };
   buttonPin.addEventListener('mousedown', onActivateMap);
 
   buttonPin.addEventListener('mousedown', function (evt) {

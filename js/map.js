@@ -5,7 +5,7 @@
   var Y_PIN = 75;
   var createCard = window.generateCard.createCard;
   var addPin = window.pin.addPin;
-  var onActivateMap = window.form.onActivateMap;
+
 
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
@@ -20,7 +20,6 @@
     for (var j = 0; j < mapPin.length; j++) {
       mapPin[j].remove();
     }
-    buttonPin.addEventListener('mousedown', onActivateMap);
   };
 
   var activationPin = function (obj) {
