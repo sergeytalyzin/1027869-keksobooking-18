@@ -22,7 +22,6 @@
   var load = window.backend.load;
   var save = window.backend.save;
 
-
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');
     numberGuests.setCustomValidity('');
@@ -93,7 +92,6 @@
     .content
     .querySelector('.success');
 
-
   var onError = function () {
     var error = teamplateError.cloneNode(true);
     document.body.appendChild(error);
@@ -114,14 +112,13 @@
     deactivatePin();
     buttonPin.addEventListener('mousedown', onActivateMap);
     var successfully = teamplateSuccess.cloneNode(true);
-    document.addEventListener('keydown', function (evt) {
+    document.addEventListener('keydown', function (evt) { // как удалить обработчик???????? разве что его вынести в отдельную функцию?
       window.map.escPress(evt, function () {
         successfully.remove();
       });
     });
     document.body.appendChild(successfully);
   };
-
 
   var onActivateMap = function () {
     load(activatePin, onError);
@@ -246,8 +243,4 @@
       evt.preventDefault();
     }
   });
-  window.form = {
-    onActivateMap: onActivateMap
-  };
-
 })();

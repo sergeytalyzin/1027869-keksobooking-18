@@ -6,7 +6,6 @@
   var createCard = window.generateCard.createCard;
   var addPin = window.pin.addPin;
 
-
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].setAttribute('disabled', 'disabled');

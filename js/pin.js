@@ -14,8 +14,6 @@
     }
     return fragmentPin;
   };
-
-
   var teamplatePin = document.querySelector('#pin')
     .content
     .querySelector('.map__pin');
