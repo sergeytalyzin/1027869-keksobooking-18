@@ -14,9 +14,13 @@
   var typeHousing = document.querySelector('#type');
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
-  var activateMap = window.map.activationPin;
+  var activatePin = window.map.activationPin;
+  var deactivatePin = window.map.deactivationPin;
   var findCoordination = window.map.findCoordination;
   var mapOverlay = document.querySelector('.map__overlay');
+  var load = window.backend.load;
+  var save = window.backend.save;
+
 
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');
@@ -80,12 +84,35 @@
       }
     }
   };
+  var teamplateError = document.querySelector('#error')
+    .content
+    .querySelector('.error');
 
-  var onActivateMap = function () {
-    activateMap();
-    buttonPin.removeEventListener('mousedown', onActivateMap);
+  var teamplateSuccess = document.querySelector('#success')
+    .content
+    .querySelector('.success');
+
+
+  var onError = function () {
+    var error = teamplateError.cloneNode(true);
+    document.body.appendChild(error);
   };
 
+  var onSuccess = function () {
+    deactivatePin();
+    var successfully = teamplateSuccess.cloneNode(true);
+    document.body.appendChild(successfully);
+  };
+
+  form.addEventListener('submit', function (evt) {
+    evt.preventDefault();
+    save(new FormData(form), onSuccess, onError);
+  });
+
+  var onActivateMap = function () {
+    load(activatePin, onError);
+    buttonPin.removeEventListener('mousedown', onActivateMap);
+  };
   buttonPin.addEventListener('mousedown', onActivateMap);
 
   buttonPin.addEventListener('mousedown', function (evt) {
@@ -135,7 +162,7 @@
 
   buttonPin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      activateMap();
+      activatePin();
     }
   });
 

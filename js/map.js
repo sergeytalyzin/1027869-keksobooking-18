@@ -4,6 +4,7 @@
   var X_PIN = 32;
   var Y_PIN = 75;
   var createCard = window.generateCard.createCard;
+  var addPin = window.pin.addPin;
 
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
@@ -13,7 +14,8 @@
     adFormHeader.setAttribute('disabled', 'disabled');
   };
 
-  var activationPin = function () {
+  var activationPin = function (obj) {
+    var pins = addPin(obj);
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].removeAttribute('disabled');
     }
@@ -21,16 +23,15 @@
     adFormHeader.removeAttribute('disabled');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    advertPin.appendChild(window.content);
+    advertPin.appendChild(pins);
     findCoordination(window.address);
 
     var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     for (var j = 0; j < window.appartments.length; j++) {
-      getButtonPin(window.data[j], buttonCards[j]);
+      getButtonPin(obj[j], buttonCards[j]);
     }
   };
-
 
   var findCoordination = function (elem) {
     var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
