@@ -5,6 +5,7 @@
   var Y_PIN = 75;
   var createCard = window.generateCard.createCard;
   var addPin = window.pin.addPin;
+  var onActivateMap = window.form.onActivateMap;
 
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
@@ -12,6 +13,14 @@
     }
     mapFiltres.setAttribute('disabled', 'disabled');
     adFormHeader.setAttribute('disabled', 'disabled');
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var j = 0; j < mapPin.length; j++) {
+      mapPin[j].remove();
+    }
+    buttonPin.addEventListener('mousedown', onActivateMap);
   };
 
   var activationPin = function (obj) {
@@ -66,6 +75,12 @@
     }
   };
 
+  var escPress = function (evt, func) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      func();
+    }
+  };
+
   var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -82,6 +97,7 @@
   window.map = {
     activationPin: activationPin,
     deactivationPin: deactivationPin,
-    findCoordination: findCoordination
+    findCoordination: findCoordination,
+    escPress: escPress
   };
 })();

@@ -101,11 +101,17 @@
   var onSuccess = function () {
     deactivatePin();
     var successfully = teamplateSuccess.cloneNode(true);
+    document.addEventListener('keydown', function (evt) {
+      window.map.escPress(evt, function () {
+        successfully.remove();
+      });
+    });
     document.body.appendChild(successfully);
   };
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
+    window.address.removeAttribute('disabled');
     save(new FormData(form), onSuccess, onError);
   });
 
@@ -225,5 +231,8 @@
       evt.preventDefault();
     }
   });
+  window.form = {
+    onActivateMap: onActivateMap
+  };
 
 })();
