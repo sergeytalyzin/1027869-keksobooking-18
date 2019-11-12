@@ -4,6 +4,7 @@
   var X_PIN = 32;
   var Y_PIN = 75;
   var createCard = window.generateCard.createCard;
+  var addPin = window.pin.addPin;
 
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
@@ -11,9 +12,17 @@
     }
     mapFiltres.setAttribute('disabled', 'disabled');
     adFormHeader.setAttribute('disabled', 'disabled');
+    map.classList.add('map--faded');
+    adForm.classList.add('ad-form--disabled');
+
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    for (var j = 0; j < mapPin.length; j++) {
+      mapPin[j].remove();
+    }
   };
 
-  var activationPin = function () {
+  var activationPin = function (obj) {
+    var pins = addPin(obj);
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].removeAttribute('disabled');
     }
@@ -21,16 +30,15 @@
     adFormHeader.removeAttribute('disabled');
     map.classList.remove('map--faded');
     adForm.classList.remove('ad-form--disabled');
-    advertPin.appendChild(window.content);
+    advertPin.appendChild(pins);
     findCoordination(window.address);
 
     var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
     for (var j = 0; j < window.appartments.length; j++) {
-      getButtonPin(window.appartments[j], buttonCards[j]);
+      getButtonPin(obj[j], buttonCards[j]);
     }
   };
-
 
   var findCoordination = function (elem) {
     var coordX = buttonPin.getBoundingClientRect().x + X_PIN;
@@ -65,6 +73,12 @@
     }
   };
 
+  var escPress = function (evt, func) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      func();
+    }
+  };
+
   var templateCard = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -81,6 +95,7 @@
   window.map = {
     activationPin: activationPin,
     deactivationPin: deactivationPin,
-    findCoordination: findCoordination
+    findCoordination: findCoordination,
+    escPress: escPress
   };
 })();
