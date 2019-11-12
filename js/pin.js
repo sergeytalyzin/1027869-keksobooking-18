@@ -21,5 +21,4 @@
   window.pin = {
     addPin: addPin
   };
-
 })();
