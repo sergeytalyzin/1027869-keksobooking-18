@@ -46,7 +46,7 @@
 
     var buttonCards = document.querySelectorAll('.map__pin:not(.map__pin--main)');
 
-    for (var j = 0; j < window.appartments.length; j++) {
+    for (var j = 0; j < obj.length; j++) {
       getButtonPin(obj[j], buttonCards[j]);
     }
   };
@@ -190,6 +190,6 @@
     deactivationPin: deactivationPin,
     onActivateMap: onActivateMap,
     onError: onError,
-    onSuccess: onSuccess
+    onSuccess: onSuccess,
   };
 })();
