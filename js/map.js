@@ -15,7 +15,14 @@
   var isEscEvent = window.util.isEscEvent;
   var close;
 
-
+  var deletePins = function () {
+    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    if (mapPin) {
+      for (var i = 0; i < mapPin.length; i++) {
+        mapPin[i].remove();
+      }
+    }
+  };
   var deactivationPin = function () {
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].setAttribute('disabled', 'disabled');
@@ -25,14 +32,11 @@
     map.classList.add('map--faded');
     adForm.classList.add('ad-form--disabled');
     resetMapPinMain();
-
-    var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var j = 0; j < mapPin.length; j++) {
-      mapPin[j].remove();
-    }
+    deletePins();
   };
 
   var activationPin = function (obj) {
+    deletePins();
     var pins = addPin(obj);
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].removeAttribute('disabled');
@@ -57,8 +61,37 @@
     findCoordination(window.address);
   };
 
+  var pins = [];
+  var typeSelect;
+  var succsessHandler = function (data) {
+    pins = data;
+    updatePin();
+  };
+
+  var updatePin = function () {
+    var sameType;
+    if (selectType.value === 'any') {
+      sameType = pins.slice(5);
+    } else {
+      sameType = pins.filter(function (it) {
+        return it.offer.type === typeSelect;
+      });
+      if (sameType.length > 5) {
+        sameType = sameType.slice(5);
+      }
+    }
+    activationPin(sameType);
+  };
+
+  var selectType = document.querySelector('#housing-type');
+
+  selectType.addEventListener('change', function () {
+    typeSelect = selectType.value;
+    updatePin();
+  });
+
   var onActivateMap = function () {
-    load(activationPin, onError);
+    load(succsessHandler, onError);
     buttonPin.removeEventListener('mousedown', onActivateMap);
   };
   var findCoordination = function (elem) {
