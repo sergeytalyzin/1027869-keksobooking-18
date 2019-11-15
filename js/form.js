@@ -1,10 +1,5 @@
 'use strict';
 (function () {
-  var ENTER_KEYCODE = 13;
-  var WIDTH_PIN = 50;
-  var HEIGTH_PIN = 70;
-
-  var buttonPin = document.querySelector('.map__pin--main');
   var numberGuests = document.querySelector('#capacity');
   var numberRooms = document.querySelector('#room_number');
   var buttonSubmit = document.querySelector('.ad-form__submit');
@@ -14,13 +9,10 @@
   var typeHousing = document.querySelector('#type');
   var timeIn = document.querySelector('#timein');
   var timeOut = document.querySelector('#timeout');
-  var mapOverlay = document.querySelector('.map__overlay');
-  var description = document.querySelector('#description');
-  var activatePin = window.map.activationPin;
-  var deactivatePin = window.map.deactivationPin;
-  var findCoordination = window.map.findCoordination;
-  var load = window.backend.load;
+  var onError = window.map.onError;
   var save = window.backend.save;
+  var onSuccess = window.map.onSuccess;
+
 
   var onErrorRoomGuest = function () {
     numberRooms.setCustomValidity('');
@@ -84,46 +76,7 @@
       }
     }
   };
-  var teamplateError = document.querySelector('#error')
-    .content
-    .querySelector('.error');
 
-  var teamplateSuccess = document.querySelector('#success')
-    .content
-    .querySelector('.success');
-
-  var onError = function () {
-    var error = teamplateError.cloneNode(true);
-    document.body.appendChild(error);
-  };
-
-  var resetFieldset = function () {
-    var checkbox = document.querySelectorAll('.feature__checkbox');
-    for (var i = 0; i < checkbox.length; i++) {
-      checkbox[i].checked = false;
-    }
-    titleInput.value = '';
-    price.value = '';
-    description.value = '';
-  };
-
-  var onSuccess = function () {
-    resetFieldset();
-    deactivatePin();
-    buttonPin.addEventListener('mousedown', onActivateMap);
-    var successfully = teamplateSuccess.cloneNode(true);
-    document.addEventListener('keydown', function (evt) { // как удалить обработчик???????? разве что его вынести в отдельную функцию?
-      window.map.escPress(evt, function () {
-        successfully.remove();
-      });
-    });
-    document.body.appendChild(successfully);
-  };
-
-  var onActivateMap = function () {
-    load(activatePin, onError);
-    buttonPin.removeEventListener('mousedown', onActivateMap);
-  };
 
   form.addEventListener('submit', function (evt) {
     evt.preventDefault();
@@ -131,58 +84,6 @@
     save(new FormData(form), onSuccess, onError);
   });
 
-  buttonPin.addEventListener('mousedown', onActivateMap);
-
-  buttonPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    var startCoords = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
-    var onMouseMove = function (moveEvt) {
-      moveEvt.preventDefault();
-
-      var shift = {
-        x: startCoords.x - moveEvt.clientX,
-        y: startCoords.y - moveEvt.clientY
-      };
-      startCoords = {
-        x: moveEvt.clientX,
-        y: moveEvt.clientY
-      };
-
-      if ((buttonPin.offsetTop - shift.y) < mapOverlay.offsetTop) {
-        buttonPin.style.top = mapOverlay.offsetTop + 'px';
-      } else if ((buttonPin.offsetTop - shift.y) > mapOverlay.offsetHeight - HEIGTH_PIN) {
-        buttonPin.style.top = mapOverlay.offsetHeight - HEIGTH_PIN + 'px';
-      } else {
-        buttonPin.style.top = (buttonPin.offsetTop - shift.y) + 'px';
-      }
-
-      if ((buttonPin.offsetLeft - shift.x) < mapOverlay.offsetLeft) {
-        buttonPin.style.left = mapOverlay.offsetLeft + 'px';
-      } else if ((buttonPin.offsetLeft - shift.x) > mapOverlay.offsetWidth - WIDTH_PIN) {
-        buttonPin.style.left = mapOverlay.offsetWidth - WIDTH_PIN + 'px';
-      } else {
-        buttonPin.style.left = (buttonPin.offsetLeft - shift.x) + 'px';
-      }
-    };
-
-    var onMouseUp = function (upEvt) {
-      upEvt.preventDefault();
-      findCoordination(window.address);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  });
-
-  buttonPin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      activatePin();
-    }
-  });
 
   numberGuests.addEventListener('change', onErrorRoomGuest);
 
