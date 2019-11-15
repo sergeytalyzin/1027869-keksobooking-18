@@ -4,7 +4,7 @@
 
   var Url = {
     GET: 'https://js.dump.academy/keksobooking/data',
-    POST: 'https://js.dump.academy/keksobooking11111'
+    POST: 'https://js.dump.academy/keksobooking'
   };
 
 
