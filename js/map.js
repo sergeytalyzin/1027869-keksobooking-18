@@ -62,33 +62,24 @@
   };
 
   var pins = [];
-  var typeSelect;
   var succsessHandler = function (data) {
     pins = data;
     updatePin();
   };
 
-  var updatePin = function () {
-    var sameType;
-    if (selectType.value === 'any') {
-      sameType = pins.slice(5);
-    } else {
-      sameType = pins.filter(function (it) {
-        return it.offer.type === typeSelect;
-      });
-      if (sameType.length > 5) {
-        sameType = sameType.slice(5);
-      }
-    }
-    activationPin(sameType);
+  var filterByType = function (item) {
+    return selectType.value === item.offer.type || selectType.value === 'any';
   };
 
+  var updatePin = function () {
+    var data = pins.filter(function (it) {
+      return filterByType(it);
+    }).slice(0, 5);
+    activationPin(data);
+  };
   var selectType = document.querySelector('#housing-type');
-
-  selectType.addEventListener('change', function () {
-    typeSelect = selectType.value;
-    updatePin();
-  });
+  var mapFilters = document.querySelector('.map__filters');
+  mapFilters.addEventListener('change', updatePin);
 
   var onActivateMap = function () {
     load(succsessHandler, onError);
