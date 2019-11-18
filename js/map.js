@@ -99,7 +99,6 @@
     arr = Array.from(checkboxWifi).map(function (it) {
       return it.checked && it.value;
     }).filter(Boolean);
-    console.log(arr);
     return arr.every(function (elem) {
       return feauteresArray.indexOf(elem) > -1;
     });
