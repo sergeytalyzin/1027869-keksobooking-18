@@ -14,6 +14,7 @@
   var addPin = window.pin.addPin;
   var isEscEvent = window.util.isEscEvent;
   var close;
+  var debounce = window.util.debounce;
 
   var deletePins = function () {
     var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -71,21 +72,7 @@
       return 'high';
     }
   };
-  var DEBOUNCE_INTERVAL = 500; // ms
 
-  var debounce = function (cb) {
-    var lastTimeout = null;
-
-    return function () {
-      var parameters = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(function () {
-        cb.apply(null, parameters);
-      }, DEBOUNCE_INTERVAL);
-    };
-  };
 
   var pins = [];
   var succsessHandler = function (data) {
@@ -114,9 +101,7 @@
         return it.value;
       }
       return undefined;
-    }).filter(function (it) {
-      return it !== undefined;
-    });
+    }).filter(Boolean);
     return arr.every(function (elem) {
       return feauteresArray.indexOf(elem) > -1;
     });
