@@ -61,6 +61,32 @@
     findCoordination(window.address);
   };
 
+
+  var transferMoney = function (elem) {
+    if (elem < 10000) {
+      return 'low';
+    } else if (elem >= 10000 && elem < 50000) {
+      return 'middle';
+    } else {
+      return 'high';
+    }
+  };
+  var DEBOUNCE_INTERVAL = 500; // ms
+
+  var debounce = function (cb) {
+    var lastTimeout = null;
+
+    return function () {
+      var parameters = arguments;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(function () {
+        cb.apply(null, parameters);
+      }, DEBOUNCE_INTERVAL);
+    };
+  };
+
   var pins = [];
   var succsessHandler = function (data) {
     pins = data;
@@ -70,16 +96,45 @@
   var filterByType = function (item) {
     return selectType.value === item.offer.type || selectType.value === 'any';
   };
+  var filterByPrice = function (item) {
+    return selectPrice.value === transferMoney(item.offer.price) || selectPrice.value === 'any';
+  };
+  var filterByRooms = function (item) {
+    return +selectRooms.value === item.offer.rooms || selectRooms.value === 'any';
+  };
+  var filterGuests = function (item) {
+    return +selectGuests.value === item.offer.guests || selectGuests.value === 'any';
+  };
 
+  var filters = function (item) {
+    var feauteresArray = item.offer.features;
+    var arr = [];
+    arr = Array.from(checkboxWifi).map(function (it) {
+      if (it.checked) {
+        return it.value;
+      }
+      return undefined;
+    }).filter(function (it) {
+      return it !== undefined;
+    });
+    return arr.every(function (elem) {
+      return feauteresArray.indexOf(elem) > -1;
+    });
+  };
   var updatePin = function () {
     var data = pins.filter(function (it) {
-      return filterByType(it);
+      return filterByType(it) && filterByPrice(it) && filterByRooms(it) && filterGuests(it) && filters(it);
     }).slice(0, 5);
     activationPin(data);
   };
-  var selectType = document.querySelector('#housing-type');
+
   var mapFilters = document.querySelector('.map__filters');
-  mapFilters.addEventListener('change', updatePin);
+  var selectType = mapFilters.querySelector('#housing-type');
+  mapFilters.addEventListener('change', debounce(updatePin));
+  var selectPrice = mapFilters.querySelector('#housing-price');
+  var selectGuests = mapFilters.querySelector('#housing-guests');
+  var selectRooms = mapFilters.querySelector('#housing-rooms');
+  var checkboxWifi = mapFilters.querySelectorAll('.map__features input');
 
   var onActivateMap = function () {
     load(succsessHandler, onError);
@@ -198,8 +253,8 @@
   });
 
   var templateCard = document.querySelector('#card')
-  .content
-  .querySelector('.map__card');
+    .content
+    .querySelector('.map__card');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var adForm = document.querySelector('.ad-form');
   var mapFiltres = document.querySelector('.map__filters');
