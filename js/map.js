@@ -15,6 +15,8 @@
   var isEscEvent = window.util.isEscEvent;
   var close;
   var debounce = window.util.debounce;
+  var mapFilters = document.querySelector('.map__filters');
+  var mapInputSelect = mapFilters.querySelectorAll('.map__filter, .map__features input');
 
   var deletePins = function () {
     var mapPin = document.querySelectorAll('.map__pin:not(.map__pin--main)');
@@ -28,6 +30,9 @@
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].setAttribute('disabled', 'disabled');
     }
+    mapInputSelect.forEach(function (it) {
+      it.setAttribute('disabled', 'disabled');
+    });
     mapFiltres.setAttribute('disabled', 'disabled');
     adFormHeader.setAttribute('disabled', 'disabled');
     map.classList.add('map--faded');
@@ -39,6 +44,9 @@
   var activationPin = function (obj) {
     deletePins();
     var pins = addPin(obj);
+    mapInputSelect.forEach(function (it) {
+      it.removeAttribute('disabled');
+    });
     for (var i = 0; i < adFormElements.length; i++) {
       adFormElements[i].removeAttribute('disabled');
     }
@@ -93,24 +101,24 @@
     return +selectGuests.value === item.offer.guests || selectGuests.value === 'any';
   };
 
-  var filters = function (item) {
+  var chooseService = function (item) {
     var feauteresArray = item.offer.features;
-    var arr = [];
-    arr = Array.from(checkboxWifi).map(function (it) {
+    var checkboxes = [];
+    checkboxes = Array.from(checkboxWifi).map(function (it) {
       return it.checked && it.value;
     }).filter(Boolean);
-    return arr.every(function (elem) {
+    return checkboxes.every(function (elem) {
       return feauteresArray.indexOf(elem) > -1;
     });
   };
   var updatePin = function () {
     var data = pins.filter(function (it) {
-      return filterByType(it) && filterByPrice(it) && filterByRooms(it) && filterGuests(it) && filters(it);
+      return filterByType(it) && filterByPrice(it) && filterByRooms(it) && filterGuests(it) && chooseService(it);
     }).slice(0, 5);
     activationPin(data);
   };
 
-  var mapFilters = document.querySelector('.map__filters');
+
   var selectType = mapFilters.querySelector('#housing-type');
   mapFilters.addEventListener('change', debounce(updatePin));
   var selectPrice = mapFilters.querySelector('#housing-price');
@@ -244,9 +252,11 @@
   var adFormElements = document.querySelectorAll('.ad-form__element');
   var advertPin = document.querySelector('.map__pins');
   var map = document.querySelector('.map');
-  window.address = document.querySelector('#address');
+  var address = document.querySelector('#address');
+  deactivationPin();
 
   window.map = {
+    address: address,
     activationPin: activationPin,
     deactivationPin: deactivationPin,
     onActivateMap: onActivateMap,
