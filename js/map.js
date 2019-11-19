@@ -101,19 +101,21 @@
     return +selectGuests.value === item.offer.guests || selectGuests.value === 'any';
   };
 
-  var chooseService = function (item) {
+  var filterFeatures = function (item) {
     var feauteresArray = item.offer.features;
     var checkboxes = [];
-    checkboxes = Array.from(checkboxWifi).map(function (it) {
-      return it.checked && it.value;
-    }).filter(Boolean);
-    return checkboxes.every(function (elem) {
+    checkboxWifi.forEach(function (it) {
+      return it.checked && checkboxes.push(it.value);
+    });
+    checkboxes = checkboxes.every(function (elem) {
       return feauteresArray.indexOf(elem) > -1;
     });
+    return checkboxes;
   };
+
   var updatePin = function () {
     var data = pins.filter(function (it) {
-      return filterByType(it) && filterByPrice(it) && filterByRooms(it) && filterGuests(it) && chooseService(it);
+      return filterByType(it) && filterByPrice(it) && filterByRooms(it) && filterGuests(it) && filterFeatures(it);
     }).slice(0, 5);
     activationPin(data);
   };

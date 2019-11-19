@@ -2,16 +2,16 @@
 (function () {
   var addPin = function (array) {
     var fragmentPin = document.createDocumentFragment();
-    for (var i = 0; i < array.length; i++) {
+    array.forEach(function (it) {
       var newPin = teamplatePin.cloneNode(true);
-      newPin.setAttribute('style', 'left: ' + array[i].location.x + 'px; ' + 'top:' + array[i].location.y + 'px;');
-      newPin.src = array[i].author.avatar;
+      newPin.setAttribute('style', 'left: ' + it.location.x + 'px; ' + 'top:' + it.location.y + 'px;');
+      newPin.src = it.author.avatar;
       var imagePin = newPin.querySelector('img');
-      imagePin.setAttribute('src', array[i].author.avatar);
-      imagePin.setAttribute('alt', array[i].offer.title);
+      imagePin.setAttribute('src', it.author.avatar);
+      imagePin.setAttribute('alt', it.offer.title);
 
       fragmentPin.appendChild(newPin);
-    }
+    });
     return fragmentPin;
   };
   var teamplatePin = document.querySelector('#pin')
