@@ -159,7 +159,6 @@
 
   var onEscErrorSuccess = function (evt) {
     isEscEvent(evt, close);
-    document.removeEventListener('keydown', onEscErrorSuccess);
   };
 
   var onClick = function () {
@@ -179,6 +178,7 @@
     var error = teamplateError.cloneNode(true);
     close = function () {
       error.remove();
+      document.removeEventListener('keydown', onEscErrorSuccess);
     };
     document.body.appendChild(error);
     document.addEventListener('keydown', onEscErrorSuccess);
@@ -198,6 +198,7 @@
     var successfully = teamplateSuccess.cloneNode(true);
     close = function () {
       successfully.remove();
+      document.removeEventListener('keydown', onEscErrorSuccess);
     };
     document.body.appendChild(successfully);
     document.addEventListener('keydown', onEscErrorSuccess);
